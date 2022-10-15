@@ -15,19 +15,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/account")
 @RequiredArgsConstructor
 public class AccountController {
 
     private final JwtUtil jwtUtil;
     private final AccountService accountService;
 
-    @PostMapping("/account/signup")
+    @PostMapping("/signup")
     public GlobalResDto signup(@RequestBody @Valid AccountReqDto accountReqDto) {
         return accountService.signup(accountReqDto);
     }
 
-    @PostMapping("/account/login")
+    @PostMapping("/login")
     public GlobalResDto login(@RequestBody @Valid LoginReqDto loginReqDto, HttpServletResponse response) {
         return accountService.login(loginReqDto, response);
     }
