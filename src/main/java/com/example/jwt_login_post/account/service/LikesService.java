@@ -31,7 +31,8 @@ public class LikesService {
 //        Boolean bool = likesRepository.existsByPostAndEmail(postId, email);
         if(!likesRepository.existsByPostAndEmail(post, email)){
             likesRepository.save(likes);
-            return likes;
+        }else {
+            likesRepository.deleteByPostAndEmail(post, email);
         }
         return likes;
     }
