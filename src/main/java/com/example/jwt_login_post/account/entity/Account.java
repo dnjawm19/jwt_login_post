@@ -4,11 +4,10 @@ import com.example.jwt_login_post.account.dto.AccountReqDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -27,6 +26,9 @@ public class Account {
     private String password;
     @NotBlank
     private String phoneNumber;
+
+//    @OneToMany(mappedBy = "account")
+//    List<Like> like = new ArrayList<>();
 
     public Account(AccountReqDto accountReqDto) {
         this.name = accountReqDto.getName();
