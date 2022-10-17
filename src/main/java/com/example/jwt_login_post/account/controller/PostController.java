@@ -34,8 +34,8 @@ public class PostController {
     }
 
     @GetMapping("/get/{postId}")    //게시글 상세 조회
-    public Optional<Post> getPostId(@PathVariable Long postId) {
-        return postRepository.findById(postId);
+    public Post getPostId(@PathVariable Long postId) {
+        return postService.detail(postId);
     }
 
     @PutMapping("/{postId}")    //게시글 수정

@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class LikesService {
@@ -18,7 +20,7 @@ public class LikesService {
 
 
     @Transactional
-    public Likes createLike(Long postId, String email) {
+    public String createLike(Long postId, String email) {
         // requestDto에 있는 postId를 이용해서 post를 들고옵니다. (postRepository를 사용)
         // a게시글을 들고옴
         Post post = postRepository.findById(postId)
@@ -26,14 +28,21 @@ public class LikesService {
 
 //        Account account = accountRepository.findByEmail(email)
 //                .orElseThrow(() -> new IllegalArgumentException("이메일 존재하지 않음"));
-
-        Likes likes = new Likes(post, email);
 //        Boolean bool = likesRepository.existsByPostAndEmail(postId, email);
+
         if(!likesRepository.existsByPostAndEmail(post, email)){
+            Likes likes = new Likes(post, email);
             likesRepository.save(likes);
+            List<Likes> likescount = post.getLikes();
+            int countLike = likescount.size();
+            post.updateLikeCount(countLike);
+            return "좋아요!";
         }else {
             likesRepository.deleteByPostAndEmail(post, email);
+            List<Likes> likescount = post.getLikes();
+            int countLike = likescount.size();
+            post.updateLikeCount(countLike);
+            return "좋아요 취소";
         }
-        return likes;
     }
 }

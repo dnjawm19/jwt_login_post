@@ -1,10 +1,13 @@
 package com.example.jwt_login_post.account.controller;
 
+import com.example.jwt_login_post.account.entity.Account;
 import com.example.jwt_login_post.account.entity.Likes;
 import com.example.jwt_login_post.account.repository.LikesRepository;
 import com.example.jwt_login_post.account.service.LikesService;
 import com.example.jwt_login_post.jwt.util.JwtUtil;
+import com.example.jwt_login_post.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +18,8 @@ public class LikesController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/{postId}")
-    public Likes createLike(@PathVariable Long postId, @RequestHeader("ACCESS_TOKEN") String token) {
+    public String createLike(@PathVariable Long postId, @RequestHeader("ACCESS_TOKEN") String token, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Account account = userDetails.getAccount();
         String email = jwtUtil.getEmailFromToken(token);
         return likesService.createLike(postId, email);
     }

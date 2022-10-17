@@ -30,4 +30,17 @@ public class PostService {
 
 
     }
+
+    @Transactional
+    public Post detail(Long postid){
+        Post post = postRepository.findById(postid).orElseThrow(
+                () -> new IllegalArgumentException("")
+        );
+
+        List<Likes> likes = post.getLikes();
+        int countLike = likes.size();
+        post.updateLikeCount(countLike);
+
+        return post;
+    }
 }
