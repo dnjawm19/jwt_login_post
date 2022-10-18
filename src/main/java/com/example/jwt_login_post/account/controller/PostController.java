@@ -6,7 +6,9 @@ import com.example.jwt_login_post.account.repository.PostRepository;
 import com.example.jwt_login_post.account.service.PostService;
 import com.example.jwt_login_post.jwt.dto.TokenDto;
 import com.example.jwt_login_post.jwt.util.JwtUtil;
+import com.example.jwt_login_post.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,15 +24,13 @@ public class PostController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("")            //게시글 작성
-    public Post createPost(@RequestBody PostDto requestDto, @RequestHeader("ACCESS_TOKEN") String token) {
-        String email = jwtUtil.getEmailFromToken(token);
-        Post post = new Post(requestDto,email);
-        return postRepository.save(post);
+    public Post createPost(@RequestBody PostDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.create(requestDto, userDetails);
     }
 
     @GetMapping("/get")        //게시글 전체 조회
     public List<Post> getPost() {
-        return postRepository.findAllByOrderByCreatedAtDesc();
+        return postService.getAll();
     }
 
     @GetMapping("/get/{postId}")    //게시글 상세 조회
@@ -46,8 +46,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}")      //게시글 삭제
-    public Long deletePost(@PathVariable Long postId, @RequestHeader("ACCESS_TOKEN") String token) {
-        String email = jwtUtil.getEmailFromToken(token);
+    public Long deletePost(@PathVariable Long postId) {
         postRepository.deleteById(postId);
         return postId;
     }

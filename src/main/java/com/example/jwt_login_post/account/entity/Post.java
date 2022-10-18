@@ -1,6 +1,7 @@
 package com.example.jwt_login_post.account.entity;
 
 import com.example.jwt_login_post.account.dto.PostDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,10 +28,11 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+            @JsonIgnore
     List<Likes> likes = new ArrayList<>();
 
     // 좋아요의 수

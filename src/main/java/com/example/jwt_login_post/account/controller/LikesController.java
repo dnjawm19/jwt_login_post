@@ -15,13 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/like")
 public class LikesController {
     private final LikesService likesService;
-    private final JwtUtil jwtUtil;
 
     @PostMapping("/{postId}")
-    public String createLike(@PathVariable Long postId, @RequestHeader("ACCESS_TOKEN") String token, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Account account = userDetails.getAccount();
-        String email = jwtUtil.getEmailFromToken(token);
-        return likesService.createLike(postId, email);
+    public String createLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return likesService.createLike(postId, userDetails);
     }
 
     // 좋아요 저장로직

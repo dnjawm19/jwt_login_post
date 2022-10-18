@@ -27,8 +27,8 @@ public class Account {
     @NotBlank
     private String phoneNumber;
 
-//    @OneToMany(mappedBy = "account")
-//    List<Like> like = new ArrayList<>();
+    @OneToMany(mappedBy = "account")
+    List<Likes> likes = new ArrayList<>();
 
     public Account(AccountReqDto accountReqDto) {
         this.name = accountReqDto.getName();

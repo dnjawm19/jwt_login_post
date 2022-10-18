@@ -4,6 +4,7 @@ import com.example.jwt_login_post.account.dto.PostDto;
 import com.example.jwt_login_post.account.entity.Likes;
 import com.example.jwt_login_post.account.entity.Post;
 import com.example.jwt_login_post.account.repository.PostRepository;
+import com.example.jwt_login_post.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,23 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
+    public Post create(PostDto postDto, UserDetailsImpl userDetails){
+        String email = userDetails.getAccount().getEmail();
+        Post post = new Post(postDto,email);
+        return postRepository.save(post);
+    }
+
+    @Transactional
+    public List<Post> getAll() {
+        for (Post posts : postRepository.findAll()){
+            List<Likes> likes = posts.getLikes();
+            int countLike = likes.size();
+            posts.updateLikeCount(countLike);
+        }
+        return postRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    @Transactional
     public Long update(Long id, PostDto requestDto, String email) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
@@ -27,10 +45,7 @@ public class PostService {
             post.update(requestDto);
             return post.getId();
         }
-
         return id;
-
-
     }
 
     @Transactional

@@ -15,21 +15,18 @@ public class Likes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String email;
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "post_id")
     private Post post;
 
-//    @ManyToOne
-//    @JsonIgnore
-//    @JoinColumn(name = "member_id")
-//    private Account account;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "member_id")
+    private Account account;
 
-    public Likes(Post post, String email){
+    public Likes(Post post, Account account){
         this.post = post;
-        this.email = email;
+        this.account = account;
     }
 }
