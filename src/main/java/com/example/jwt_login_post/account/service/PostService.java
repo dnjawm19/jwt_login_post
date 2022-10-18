@@ -1,12 +1,14 @@
 package com.example.jwt_login_post.account.service;
 
 import com.example.jwt_login_post.account.dto.PostDto;
+import com.example.jwt_login_post.account.entity.Likes;
 import com.example.jwt_login_post.account.entity.Post;
 import com.example.jwt_login_post.account.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor

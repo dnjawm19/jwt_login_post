@@ -33,7 +33,8 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post")
     List<Likes> likes = new ArrayList<>();
 
-    private Integer countLike = likes.size();
+    // 좋아요의 수
+    private Integer countLike;
 
     public Post(PostDto requestDto,String userEmail) {
         this.title = requestDto.getTitle();
@@ -44,5 +45,9 @@ public class Post extends Timestamped {
     public void update(PostDto requestDto) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+    }
+
+    public void updateLikeCount(int countLike) {
+        this.countLike = countLike;
     }
 }
