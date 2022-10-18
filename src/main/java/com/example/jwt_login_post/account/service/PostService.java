@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -36,16 +35,17 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(Long id, PostDto requestDto, String email) {
+    public String update(Long id, PostDto requestDto, UserDetailsImpl userDetails) {
+        String accountEmail = userDetails.getAccount().getEmail();
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
-        String p = post.getUserEmail();
-        if(p.equals(email)){
+        if(post.getUserEmail().equals(accountEmail)){
             post.update(requestDto);
-            return post.getId();
+            return "수정 완료";
+        } else {
+            return "작성자가 아닙니다.";
         }
-        return id;
     }
 
     @Transactional
@@ -59,5 +59,19 @@ public class PostService {
         post.updateLikeCount(countLike);
 
         return post;
+    }
+
+    @Transactional
+    public String deletePost(Long id, UserDetailsImpl userDetails) {
+        String accountEmail = userDetails.getAccount().getEmail();
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
+        );
+        if(post.getUserEmail().equals(accountEmail)) {
+            postRepository.deleteById(id);
+            return "삭제 성공";
+        }else{
+            return "작성자가 아닙니다.";
+        }
     }
 }

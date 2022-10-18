@@ -39,16 +39,13 @@ public class PostController {
     }
 
     @PutMapping("/{postId}")    //게시글 수정
-    public Long updatePost(@PathVariable Long postId, @RequestBody PostDto requestDto, @RequestHeader("ACCESS_TOKEN") String token) {
-        String email = jwtUtil.getEmailFromToken(token);
-        postService.update(postId, requestDto, email);
-        return postId;
+    public String updatePost(@PathVariable Long postId, @RequestBody PostDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.update(postId, requestDto, userDetails);
     }
 
     @DeleteMapping("/{postId}")      //게시글 삭제
-    public Long deletePost(@PathVariable Long postId) {
-        postRepository.deleteById(postId);
-        return postId;
+    public String deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.deletePost(postId, userDetails);
     }
 
 
