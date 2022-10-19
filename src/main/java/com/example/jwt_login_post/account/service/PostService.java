@@ -1,6 +1,7 @@
 package com.example.jwt_login_post.account.service;
 
 import com.example.jwt_login_post.account.dto.PostDto;
+import com.example.jwt_login_post.account.dto.PostResponseDto;
 import com.example.jwt_login_post.account.entity.Likes;
 import com.example.jwt_login_post.account.entity.Post;
 import com.example.jwt_login_post.account.repository.PostRepository;
@@ -49,7 +50,7 @@ public class PostService {
     }
 
     @Transactional
-    public Post detail(Long postid){
+    public PostResponseDto detail(Long postid){
         Post post = postRepository.findById(postid).orElseThrow(
                 () -> new IllegalArgumentException("")
         );
@@ -58,7 +59,8 @@ public class PostService {
         int countLike = likes.size();
         post.updateLikeCount(countLike);
 
-        return post;
+        PostResponseDto postDto = new PostResponseDto(post);
+        return postDto;
     }
 
     @Transactional

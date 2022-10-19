@@ -17,7 +17,6 @@ import java.util.List;
 @Service
 public class LikesService {
     private final PostRepository postRepository;
-    private final AccountRepository accountRepository;
     private final LikesRepository likesRepository;
 
 
@@ -41,5 +40,20 @@ public class LikesService {
             likesRepository.deleteByPostAndAccount(post, account);
             return "좋아요 취소";
         }
+
+        // 좋아요를 누른 상태인지, 누르지 않은 상태인지 확인할 필요가 있습니다.
+//        Optional<Likes> foundLike = likesRepository.findByPostAndAccount(post, account);
+//        if (foundLike.isPresent()) {
+//            likesRepository.delete(foundLike.get());
+//            List<Likes> likes1 = post.getLikes();
+//            System.out.println(likes1.size());
+//            return "좋아요 취소!";
+//        } else {
+//            Likes likes = new Likes(post, account);
+//            likesRepository.save(likes);
+//            List<Likes> likes1 = post.getLikes();
+//            System.out.println(likes1.size());
+//            return "좋아요";
+//        }
     }
 }
