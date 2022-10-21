@@ -3,7 +3,6 @@ package com.example.jwt_login_post.account.service;
 import com.example.jwt_login_post.account.entity.Account;
 import com.example.jwt_login_post.account.entity.Likes;
 import com.example.jwt_login_post.account.entity.Post;
-import com.example.jwt_login_post.account.repository.AccountRepository;
 import com.example.jwt_login_post.account.repository.LikesRepository;
 import com.example.jwt_login_post.account.repository.PostRepository;
 import com.example.jwt_login_post.security.user.UserDetailsImpl;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service

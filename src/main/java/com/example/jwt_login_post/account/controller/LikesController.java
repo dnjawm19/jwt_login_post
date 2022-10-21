@@ -1,8 +1,10 @@
 package com.example.jwt_login_post.account.controller;
 
+import com.example.jwt_login_post.account.dto.AccountResponseDto;
 import com.example.jwt_login_post.account.entity.Account;
 import com.example.jwt_login_post.account.entity.Likes;
 import com.example.jwt_login_post.account.repository.LikesRepository;
+import com.example.jwt_login_post.account.service.AccountService;
 import com.example.jwt_login_post.account.service.LikesService;
 import com.example.jwt_login_post.jwt.util.JwtUtil;
 import com.example.jwt_login_post.security.user.UserDetailsImpl;
@@ -15,10 +17,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/like")
 public class LikesController {
     private final LikesService likesService;
+    private final AccountService accountService;
 
     @PostMapping("/{postId}")
     public String createLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return likesService.createLike(postId, userDetails);
+    }
+
+    @GetMapping("/get")
+    public AccountResponseDto getAccount(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return accountService.getAccount(userDetails);
     }
 
     // 좋아요 저장로직

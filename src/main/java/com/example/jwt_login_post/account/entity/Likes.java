@@ -28,5 +28,6 @@ public class Likes {
     public Likes(Post post, Account account){
         this.post = post;
         this.account = account;
+        account.getLikes().add(this);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.jwt_login_post.account.entity;
 
 import com.example.jwt_login_post.account.dto.AccountReqDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,9 +24,16 @@ public class Account {
     @NotBlank
     private String email;
     @NotBlank
+    @JsonIgnore
     private String password;
     @NotBlank
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "account")
+    List<Post> post = new ArrayList<>();
+
+    @OneToMany(mappedBy = "account")
+    List<Comment> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "account")
     List<Likes> likes = new ArrayList<>();

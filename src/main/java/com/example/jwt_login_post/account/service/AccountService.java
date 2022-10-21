@@ -1,14 +1,17 @@
 package com.example.jwt_login_post.account.service;
 
 import com.example.jwt_login_post.account.dto.AccountReqDto;
+import com.example.jwt_login_post.account.dto.AccountResponseDto;
 import com.example.jwt_login_post.account.dto.LoginReqDto;
 import com.example.jwt_login_post.account.entity.Account;
+import com.example.jwt_login_post.account.entity.Post;
 import com.example.jwt_login_post.account.entity.RefreshToken;
 import com.example.jwt_login_post.account.repository.AccountRepository;
 import com.example.jwt_login_post.account.repository.RefreshTokenRepository;
 import com.example.jwt_login_post.global.dto.GlobalResDto;
 import com.example.jwt_login_post.jwt.dto.TokenDto;
 import com.example.jwt_login_post.jwt.util.JwtUtil;
+import com.example.jwt_login_post.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -67,6 +70,15 @@ public class AccountService {
 
         return new GlobalResDto("Success Login", HttpStatus.OK.value());
 
+    }
+
+    @Transactional
+    public AccountResponseDto getAccount(UserDetailsImpl userDetails) {
+        Account account = accountRepository.findById(userDetails.getAccount().getId()).orElseThrow(
+                () -> new IllegalArgumentException("")
+        );
+        account.getLikes()
+        return new AccountResponseDto(account);
     }
 
     private void setHeader(HttpServletResponse response, TokenDto tokenDto) {

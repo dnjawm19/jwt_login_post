@@ -26,11 +26,17 @@ public class Comment extends Timestamped {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "account_id")
+    private Account account;
 
-    public Comment(String email, CommentDto requestDto, Post post) {
-        this.userEmail = email;
+
+    public Comment(Account account, CommentDto requestDto, Post post) {
+        this.userEmail = account.getEmail();
         this.post = post;
         this.contents = requestDto.getContents();
+        this.account = account;
     }
 
     public void update(CommentDto requestDto) {

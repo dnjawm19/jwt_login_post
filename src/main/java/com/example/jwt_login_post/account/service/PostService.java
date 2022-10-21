@@ -20,8 +20,7 @@ public class PostService {
 
     @Transactional
     public Post create(PostDto postDto, UserDetailsImpl userDetails){
-        String email = userDetails.getAccount().getEmail();
-        Post post = new Post(postDto,email);
+        Post post = new Post(postDto,userDetails.getAccount());
         return postRepository.save(post);
     }
 
@@ -37,11 +36,10 @@ public class PostService {
 
     @Transactional
     public String update(Long id, PostDto requestDto, UserDetailsImpl userDetails) {
-        String accountEmail = userDetails.getAccount().getEmail();
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
-        if(post.getUserEmail().equals(accountEmail)){
+        if(post.getUserEmail().equals(userDetails.getAccount().getEmail())){
             post.update(requestDto);
             return "수정 완료";
         } else {
@@ -65,11 +63,10 @@ public class PostService {
 
     @Transactional
     public String deletePost(Long id, UserDetailsImpl userDetails) {
-        String accountEmail = userDetails.getAccount().getEmail();
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
         );
-        if(post.getUserEmail().equals(accountEmail)) {
+        if(post.getUserEmail().equals(userDetails.getAccount().getEmail())) {
             postRepository.deleteById(id);
             return "삭제 성공";
         }else{
