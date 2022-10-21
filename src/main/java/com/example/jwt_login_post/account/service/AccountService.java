@@ -77,7 +77,7 @@ public class AccountService {
         Account account = accountRepository.findById(userDetails.getAccount().getId()).orElseThrow(
                 () -> new IllegalArgumentException("")
         );
-        account.getLikes()
+        account.getLikes();
         return new AccountResponseDto(account);
     }
 
